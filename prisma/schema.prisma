@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model coins {
+  id                          String   @id @db.VarChar(45)
+  symbol                      String   @db.VarChar(45)
+  name                        String   @db.VarChar(45)
+  img_url                     String   @db.VarChar(255)
+  current_price               Float    @db.Float
+  market_cap_rank             Int
+  high_24h                    Float    @db.Float
+  low_24h                     Float    @db.Float
+  price_change_percentage_24h Float    @db.Float
+  last_updated                DateTime @db.DateTime(0)
+}
