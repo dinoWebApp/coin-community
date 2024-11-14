@@ -8,14 +8,18 @@ datasource db {
 }
 
 model coins {
-  id                          String   @id @db.VarChar(45)
-  symbol                      String   @db.VarChar(45)
-  name                        String   @db.VarChar(45)
-  img_url                     String   @db.VarChar(255)
-  current_price               Float    @db.Float
-  market_cap_rank             Int
-  high_24h                    Float    @db.Float
-  low_24h                     Float    @db.Float
-  price_change_percentage_24h Float    @db.Float
-  last_updated                DateTime @db.DateTime(0)
+  market_code         String   @id @db.VarChar(45)
+  currency            String   @db.VarChar(10)
+  korean_name         String   @db.VarChar(45)
+  english_name        String   @db.VarChar(45)
+  prev_closing_price  Decimal  @db.Decimal(18, 8)
+  opening_price       Decimal  @db.Decimal(18, 8)
+  high_price          Decimal  @db.Decimal(18, 8)
+  low_price           Decimal  @db.Decimal(18, 8)
+  trade_price         Decimal  @db.Decimal(18, 8)
+  signed_change_price Decimal  @db.Decimal(18, 8)
+  signed_change_rate  Decimal  @db.Decimal(18, 8)
+  trade_datetime      DateTime @default(now()) @db.DateTime(0)
+  created_at          DateTime @default(now()) @db.DateTime(0)
+  updated_at          DateTime @default(now()) @db.DateTime(0)
 }
