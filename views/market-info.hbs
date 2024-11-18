@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{> globalcss}} {{> globaljs}}
+    <title>코인 종토방 - 코종방</title>
+  </head>
+  <body>
+    {{> header}}
+    <div class="container coin-table">
+      <h4 class="market-type">
+        {{ marketName }} 마켓
+        <span class="currency">(기준 통화: {{ marketName }})</span>
+      </h4>
+      <table class="table krw-market">
+        <thead>
+          <tr>
+            <th scope="col">코인명</th>
+            <th scope="col">현재 가격</th>
+            <th scope="col">당일 최고가</th>
+            <th scope="col">당일 최저가</th>
+            <th scope="col">변동률</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody class="krw-market">
+          {{#each coinInfo }}
+          <tr>
+            <th scope="row">{{ korean_name }}</th>
+            <td>{{ trade_price }}</td>
+            <td>{{ high_price }}</td>
+            <td>{{ low_price }}</td>
+            <td>
+              {{#isGreater signed_change_rate 0}}
+              <span style="color: green">{{ signed_change_rate }}%</span>
+              {{else}}
+              <span style="color: red">{{ signed_change_rate }}%</span>
+              {{/isGreater}}
+            </td>
+            <td><div class="discussion-room-btn">종토방</div></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,26 +1,90 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMarketDto } from './dto/create-market.dto';
 import { UpdateMarketDto } from './dto/update-market.dto';
+import { getMarketInfoDto } from './dto/get-market-info.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Currency } from 'src/common/enums/currency.enum';
+import { kMaxLength } from 'buffer';
 
 @Injectable()
 export class MarketService {
-  create(createMarketDto: CreateMarketDto) {
-    return 'This action adds a new market';
-  }
+  constructor(private readonly prisma: PrismaService) {}
+  async getMarketInfo(getMarketInfoDto: getMarketInfoDto) {
+    const { currency, page } = getMarketInfoDto;
+    const pagination = 40 * (Number(page) - 1);
 
-  findAll() {
-    return `This action returns all market`;
-  }
+    let marketName: string;
 
-  findOne(id: number) {
-    return `This action returns a #${id} market`;
-  }
+    if (currency === Currency.KRW) {
+      marketName = '원화';
+    } else {
+      marketName = currency;
+    }
 
-  update(id: number, updateMarketDto: UpdateMarketDto) {
-    return `This action updates a #${id} market`;
-  }
+    //페이지네이션 페이지마다 40개 데이터
+    const coinInfoData = await this.prisma.coins.findMany({
+      where: {
+        currency: {
+          startsWith: currency,
+        },
+      },
+      orderBy: {
+        trade_price: 'desc',
+      },
+      skip: pagination,
+      take: 40,
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} market`;
+    let coinInfo = [];
+    if (currency === Currency.BTC) {
+      coinInfo = coinInfoData.map((coin) => {
+        const {
+          trade_price,
+          prev_closing_price,
+          opening_price,
+          high_price,
+          low_price,
+          signed_change_rate,
+          ...etc
+        } = coin;
+        const coinInfo = {
+          trade_price: Number(trade_price),
+          prev_closing_price: Number(prev_closing_price),
+          opening_price: Number(opening_price),
+          high_price: Number(high_price),
+          low_price: Number(low_price),
+          signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
+          ...etc,
+        };
+        return coinInfo;
+      });
+    } else {
+      coinInfo = coinInfoData.map((coin) => {
+        const {
+          trade_price,
+          prev_closing_price,
+          opening_price,
+          high_price,
+          low_price,
+          signed_change_rate,
+          ...etc
+        } = coin;
+        const coinInfo = {
+          trade_price: Number(trade_price).toLocaleString(),
+          prev_closing_price: Number(prev_closing_price).toLocaleString(),
+          opening_price: Number(opening_price).toLocaleString(),
+          high_price: Number(high_price).toLocaleString(),
+          low_price: Number(low_price).toLocaleString(),
+          signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
+          ...etc,
+        };
+        return coinInfo;
+      });
+    }
+
+    return {
+      marketName,
+      coinInfo,
+    };
   }
 }

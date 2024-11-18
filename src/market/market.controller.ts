@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Render,
 } from '@nestjs/common';
 import { MarketService } from './market.service';
 import { CreateMarketDto } from './dto/create-market.dto';
@@ -17,28 +18,14 @@ import { getMarketInfoDto } from './dto/get-market-info.dto';
 export class MarketController {
   constructor(private readonly marketService: MarketService) {}
 
-  @Post()
-  create(@Body() createMarketDto: CreateMarketDto) {
-    return this.marketService.create(createMarketDto);
-  }
-
   @Get()
-  marketInfo(@Query() getMarketInfoDto: getMarketInfoDto) {
-    return this.marketService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.marketService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMarketDto: UpdateMarketDto) {
-    return this.marketService.update(+id, updateMarketDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.marketService.remove(+id);
+  @Render('market-info')
+  async marketInfo(@Query() getMarketInfoDto: getMarketInfoDto) {
+    const { marketName, coinInfo } =
+      await this.marketService.getMarketInfo(getMarketInfoDto);
+    return {
+      marketName,
+      coinInfo,
+    };
   }
 }

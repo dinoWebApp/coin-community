@@ -44,7 +44,7 @@
       </table>
 
       <div class="more-btn-container">
-        <div class="more-btn">더보기</div>
+        <div class="more-btn" data-currency="KRW">더보기</div>
       </div>
 
       <h4 class="market-type">
@@ -81,7 +81,7 @@
         </tbody>
       </table>
       <div class="more-btn-container">
-        <div class="more-btn">더보기</div>
+        <div class="more-btn" data-currency="USDT">더보기</div>
       </div>
 
       <h4 class="market-type">
@@ -118,8 +118,16 @@
         </tbody>
       </table>
       <div class="more-btn-container">
-        <div class="more-btn">더보기</div>
+        <div class="more-btn" data-currency="BTC">더보기</div>
       </div>
     </div>
+    <script>
+      $(function () {
+        $('.more-btn').on('click', function () {
+          const currency = $(this).data('currency');
+          location.href = `/market?currency=${currency}&page=1`;
+        });
+      });
+    </script>
   </body>
 </html>
