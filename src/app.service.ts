@@ -45,7 +45,7 @@ export class AppService {
       };
       return coinInfo;
     });
-    const usdtMarket = await this.prisma.coins.findMany({
+    const usdtMarketData = await this.prisma.coins.findMany({
       where: {
         currency: Currency.USDT,
       },
@@ -55,7 +55,29 @@ export class AppService {
       take: 5,
     });
 
-    const btcMarket = await this.prisma.coins.findMany({
+    const usdtMarket = usdtMarketData.map((coin) => {
+      const {
+        trade_price,
+        prev_closing_price,
+        opening_price,
+        high_price,
+        low_price,
+        signed_change_rate,
+        ...etc
+      } = coin;
+      const coinInfo = {
+        trade_price: Number(trade_price).toLocaleString(),
+        prev_closing_price: Number(prev_closing_price).toLocaleString(),
+        opening_price: Number(opening_price).toLocaleString(),
+        high_price: Number(high_price).toLocaleString(),
+        low_price: Number(low_price).toLocaleString(),
+        signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
+        ...etc,
+      };
+      return coinInfo;
+    });
+
+    const btcMarketData = await this.prisma.coins.findMany({
       where: {
         currency: Currency.BTC,
       },
@@ -63,6 +85,28 @@ export class AppService {
         trade_price: 'desc',
       },
       take: 5,
+    });
+
+    const btcMarket = btcMarketData.map((coin) => {
+      const {
+        trade_price,
+        prev_closing_price,
+        opening_price,
+        high_price,
+        low_price,
+        signed_change_rate,
+        ...etc
+      } = coin;
+      const coinInfo = {
+        trade_price: Number(trade_price),
+        prev_closing_price: Number(prev_closing_price),
+        opening_price: Number(opening_price),
+        high_price: Number(high_price),
+        low_price: Number(low_price),
+        signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
+        ...etc,
+      };
+      return coinInfo;
     });
 
     const coinInfo = {
