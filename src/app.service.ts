@@ -14,18 +14,40 @@ export class AppService {
   ) {}
 
   async index() {
-    const krwMarketData = await this.prisma.coins.findMany({
-      where: {
-        currency: Currency.KRW,
-      },
-      orderBy: {
-        trade_price: 'desc',
-      },
-      take: 5,
-    });
+    const [krwMarketData, usdtMarketData, btcMarketData] =
+      await this.prisma.$transaction([
+        this.prisma.coins.findMany({
+          where: {
+            currency: Currency.KRW,
+          },
+          orderBy: {
+            trade_price: 'desc',
+          },
+          take: 5,
+        }),
+        this.prisma.coins.findMany({
+          where: {
+            currency: Currency.USDT,
+          },
+          orderBy: {
+            trade_price: 'desc',
+          },
+          take: 5,
+        }),
+        this.prisma.coins.findMany({
+          where: {
+            currency: Currency.BTC,
+          },
+          orderBy: {
+            trade_price: 'desc',
+          },
+          take: 5,
+        }),
+      ]);
 
     const krwMarket = krwMarketData.map((coin) => {
       const {
+        market_code,
         trade_price,
         prev_closing_price,
         opening_price,
@@ -35,6 +57,7 @@ export class AppService {
         ...etc
       } = coin;
       const coinInfo = {
+        market_code: market_code.split('-')[1],
         trade_price: Number(trade_price).toLocaleString(),
         prev_closing_price: Number(prev_closing_price).toLocaleString(),
         opening_price: Number(opening_price).toLocaleString(),
@@ -44,19 +67,11 @@ export class AppService {
         ...etc,
       };
       return coinInfo;
-    });
-    const usdtMarketData = await this.prisma.coins.findMany({
-      where: {
-        currency: Currency.USDT,
-      },
-      orderBy: {
-        trade_price: 'desc',
-      },
-      take: 5,
     });
 
     const usdtMarket = usdtMarketData.map((coin) => {
       const {
+        market_code,
         trade_price,
         prev_closing_price,
         opening_price,
@@ -66,6 +81,7 @@ export class AppService {
         ...etc
       } = coin;
       const coinInfo = {
+        market_code: market_code.split('-')[1],
         trade_price: Number(trade_price).toLocaleString(),
         prev_closing_price: Number(prev_closing_price).toLocaleString(),
         opening_price: Number(opening_price).toLocaleString(),
@@ -77,18 +93,9 @@ export class AppService {
       return coinInfo;
     });
 
-    const btcMarketData = await this.prisma.coins.findMany({
-      where: {
-        currency: Currency.BTC,
-      },
-      orderBy: {
-        trade_price: 'desc',
-      },
-      take: 5,
-    });
-
     const btcMarket = btcMarketData.map((coin) => {
       const {
+        market_code,
         trade_price,
         prev_closing_price,
         opening_price,
@@ -98,6 +105,7 @@ export class AppService {
         ...etc
       } = coin;
       const coinInfo = {
+        market_code: market_code.split('-')[1],
         trade_price: Number(trade_price),
         prev_closing_price: Number(prev_closing_price),
         opening_price: Number(opening_price),

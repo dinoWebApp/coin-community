@@ -8,7 +8,7 @@
   </head>
   <body>
     {{> header}}
-    <div class="container coin-table">
+    <div class="container coin-table mt-4">
       <h4 class="market-type">
         {{ marketName }} 마켓
         <span class="currency">(기준 통화: {{ marketName }})</span>
@@ -43,6 +43,33 @@
           {{/each}}
         </tbody>
       </table>
+      <div class="pagination d-flex justify-content-center mt-2">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {{#repeat paginationNum}}
+            <li
+              class="page-item {{#isEqual this ../page}} active {{/isEqual}} "
+            >
+              <a
+                class="page-link"
+                href="/market?currency={{../currency}}&page={{this}}"
+                >{{this}}</a
+              >
+            </li>
+            {{/repeat}}
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </body>
 </html>

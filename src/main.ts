@@ -13,6 +13,16 @@ async function bootstrap() {
   hbs.registerHelper('isGreater', function (a, b, options) {
     return a > b ? options.fn(this) : options.inverse(this);
   });
+  hbs.registerHelper('isEqual', function (a, b, options) {
+    return a == b ? options.fn(this) : '';
+  });
+  hbs.registerHelper('repeat', function (count, options) {
+    let result = '';
+    for (let i = 0; i < count; i++) {
+      result += options.fn(i + 1); // i + 1: 1부터 시작
+    }
+    return result;
+  });
 
   await app.listen(3000);
 }

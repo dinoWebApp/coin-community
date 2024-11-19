@@ -23,3 +23,15 @@ model coins {
   created_at          DateTime @default(now()) @db.DateTime(0)
   updated_at          DateTime @default(now()) @db.DateTime(0)
 }
+
+model discussion_room_posts {
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(255)
+  content    String   @db.VarChar(3000)
+  anonymous  Boolean
+  user_name  String   @db.VarChar(50)
+  coin_code  String   @db.VarChar(10)
+  timestamp  String   @db.VarChar(50)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+}

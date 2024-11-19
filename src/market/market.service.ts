@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMarketDto } from './dto/create-market.dto';
-import { UpdateMarketDto } from './dto/update-market.dto';
 import { getMarketInfoDto } from './dto/get-market-info.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Currency } from 'src/common/enums/currency.enum';
-import { kMaxLength } from 'buffer';
 
 @Injectable()
 export class MarketService {
   constructor(private readonly prisma: PrismaService) {}
   async getMarketInfo(getMarketInfoDto: getMarketInfoDto) {
-    const { currency, page } = getMarketInfoDto;
+    const { currency, page = 1 } = getMarketInfoDto;
     const pagination = 40 * (Number(page) - 1);
 
     let marketName: string;
@@ -24,9 +21,7 @@ export class MarketService {
     //페이지네이션 페이지마다 40개 데이터
     const coinInfoData = await this.prisma.coins.findMany({
       where: {
-        currency: {
-          startsWith: currency,
-        },
+        currency: currency,
       },
       orderBy: {
         trade_price: 'desc',
@@ -82,9 +77,22 @@ export class MarketService {
       });
     }
 
+    const totalCount = await this.prisma.coins.count({
+      where: {
+        currency: {
+          startsWith: currency,
+        },
+      },
+    });
+
+    const paginationNum = Math.ceil(totalCount / 40);
+
     return {
       marketName,
       coinInfo,
+      paginationNum,
+      page,
+      currency,
     };
   }
 }

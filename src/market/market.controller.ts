@@ -21,11 +21,14 @@ export class MarketController {
   @Get()
   @Render('market-info')
   async marketInfo(@Query() getMarketInfoDto: getMarketInfoDto) {
-    const { marketName, coinInfo } =
+    const { marketName, coinInfo, paginationNum, page, currency } =
       await this.marketService.getMarketInfo(getMarketInfoDto);
     return {
       marketName,
       coinInfo,
+      paginationNum,
+      page,
+      currency,
     };
   }
 }
