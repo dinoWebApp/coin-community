@@ -10,3 +10,11 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 ></script>
+<script>
+  $(function () {
+    $('.discussion-room-btn').on('click', function () {
+      const coinCode = $(this).data('market-code');
+      location.href = `/discussion-room?coinCode=${coinCode}`;
+    });
+  });
+</script>

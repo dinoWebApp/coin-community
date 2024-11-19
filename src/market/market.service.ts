@@ -34,6 +34,7 @@ export class MarketService {
     if (currency === Currency.BTC) {
       coinInfo = coinInfoData.map((coin) => {
         const {
+          market_code,
           trade_price,
           prev_closing_price,
           opening_price,
@@ -43,6 +44,7 @@ export class MarketService {
           ...etc
         } = coin;
         const coinInfo = {
+          market_code: market_code.split('-')[1],
           trade_price: Number(trade_price),
           prev_closing_price: Number(prev_closing_price),
           opening_price: Number(opening_price),
@@ -56,6 +58,7 @@ export class MarketService {
     } else {
       coinInfo = coinInfoData.map((coin) => {
         const {
+          market_code,
           trade_price,
           prev_closing_price,
           opening_price,
@@ -65,6 +68,7 @@ export class MarketService {
           ...etc
         } = coin;
         const coinInfo = {
+          market_code: market_code.split('-')[1],
           trade_price: Number(trade_price).toLocaleString(),
           prev_closing_price: Number(prev_closing_price).toLocaleString(),
           opening_price: Number(opening_price).toLocaleString(),

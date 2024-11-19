@@ -4,30 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{> globalcss}} {{> globaljs}}
-    <title>코인 종토방 - 코종방</title>
+    <title>{{ coinName }} 종토방 - 코종방</title>
   </head>
   <body>
     {{> header}}
     <div class="container coin-table mt-4">
-      <h4 class="market-type">
-        {{ marketName }} 마켓
-        <span class="currency">(기준 통화: {{ marketName }})</span>
-      </h4>
-      <table class="table krw-market">
+      <h4 class="market-type">{{ coinName }} 종토방</h4>
+      <table class="table market">
         <thead>
           <tr>
-            <th scope="col">코인명</th>
+            <th scope="col">기준 통화</th>
             <th scope="col">현재 가격</th>
             <th scope="col">당일 최고가</th>
             <th scope="col">당일 최저가</th>
             <th scope="col">변동률</th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody class="krw-market">
           {{#each coinInfo }}
           <tr>
-            <th scope="row">{{ korean_name }}</th>
+            <th scope="row">{{ currency }}</th>
             <td>{{ trade_price }}</td>
             <td>{{ high_price }}</td>
             <td>{{ low_price }}</td>
@@ -38,18 +34,11 @@
               <span style="color: red">{{ signed_change_rate }}%</span>
               {{/isGreater}}
             </td>
-            <td>
-              <div
-                class="discussion-room-btn"
-                data-market-code="{{market_code}}"
-              >
-                종토방
-              </div>
-            </td>
           </tr>
           {{/each}}
         </tbody>
       </table>
+      {{!--
       <div class="pagination d-flex justify-content-center mt-2">
         <nav aria-label="Page navigation example">
           <ul class="pagination">
@@ -77,6 +66,7 @@
           </ul>
         </nav>
       </div>
+      --}}
     </div>
   </body>
 </html>
