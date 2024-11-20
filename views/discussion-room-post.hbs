@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{> globalcss}} {{> globaljs}}
+    <title>{{ coinName }} 종토방 - 코종방</title>
+  </head>
+  <body>
+    {{> header}}
+    <div class="d-flex">
+      <div class="d-none d-md-block col-md-2"></div>
+      <div class="col-12 col-md-8 coin-table mt-3">
+        <h4 class="discussion-room-title">{{ coinName }} 종토방</h4>
+        <div class="d-flex align-items-center user-info flex-wrap">
+          <div class="d-flex align-items-center mb-1">
+            <p style="font-size: 13px; white-space: nowrap; width: 91.85px">
+              닉네임 (1~10자)
+            </p>
+            <div class="input-nickname ms-1 me-3">
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                placeholder="익명"
+                aria-label="닉네임"
+                maxlength="10"
+              />
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-1">
+            <p style="font-size: 13px; white-space: nowrap">비밀번호 (1~6자)</p>
+            <div class="input-nickname ms-1">
+              <input
+                class="form-control form-control-sm"
+                type="password"
+                aria-label="비밀번호"
+                maxlength="6"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="title-container mt-1">
+          <input
+            class="form-control"
+            type="text"
+            maxlength="50"
+            placeholder="제목"
+          />
+        </div>
+        <div class="content-container mt-2">
+          <textarea
+            class="form-control"
+            placeholder="본문"
+            style="height: 480px; resize: none"
+          ></textarea>
+        </div>
+      </div>
+      <div class="d-none d-md-block col-md-2"></div>
+    </div>
+  </body>
+</html>

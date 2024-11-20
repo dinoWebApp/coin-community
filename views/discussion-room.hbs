@@ -8,65 +8,88 @@
   </head>
   <body>
     {{> header}}
-    <div class="container coin-table mt-4">
-      <h4 class="market-type">{{ coinName }} 종토방</h4>
-      <table class="table market">
-        <thead>
-          <tr>
-            <th scope="col">기준 통화</th>
-            <th scope="col">현재 가격</th>
-            <th scope="col">당일 최고가</th>
-            <th scope="col">당일 최저가</th>
-            <th scope="col">변동률</th>
-          </tr>
-        </thead>
-        <tbody class="krw-market">
-          {{#each coinInfo }}
-          <tr>
-            <th scope="row">{{ currency }}</th>
-            <td>{{ trade_price }}</td>
-            <td>{{ high_price }}</td>
-            <td>{{ low_price }}</td>
-            <td>
-              {{#isGreater signed_change_rate 0}}
-              <span style="color: green">{{ signed_change_rate }}%</span>
-              {{else}}
-              <span style="color: red">{{ signed_change_rate }}%</span>
-              {{/isGreater}}
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      {{!--
-      <div class="pagination d-flex justify-content-center mt-2">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            {{#repeat paginationNum}}
-            <li
-              class="page-item {{#isEqual this ../page}} active {{/isEqual}} "
-            >
-              <a
-                class="page-link"
-                href="/market?currency={{../currency}}&page={{this}}"
-                >{{this}}</a
+    <div class="d-flex">
+      <div class="d-none d-md-block col-md-2"></div>
+      <div class="col-12 col-md-8 coin-table mt-2">
+        <h4 class="market-type">{{ coinName }}</h4>
+        <table class="table market">
+          <thead>
+            <tr>
+              <th scope="col">기준 통화</th>
+              <th scope="col">현재 가격</th>
+              <th scope="col">당일 최고가</th>
+              <th scope="col">당일 최저가</th>
+              <th scope="col">변동률</th>
+            </tr>
+          </thead>
+          <tbody class="krw-market">
+            {{#each coinInfo }}
+            <tr>
+              <th scope="row">{{ currency }}</th>
+              <td>{{ trade_price }}</td>
+              <td>{{ high_price }}</td>
+              <td>{{ low_price }}</td>
+              <td>
+                {{#isGreater signed_change_rate 0}}
+                <span style="color: green">{{ signed_change_rate }}%</span>
+                {{else}}
+                <span style="color: red">{{ signed_change_rate }}%</span>
+                {{/isGreater}}
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between mt-2">
+          <h4 class="discussion-room-title">종토방</h4>
+          <div
+            class="write-btn"
+            data-coin-code="{{coinCode}}"
+            data-coin-name="{{coinName}}"
+          >
+            글쓰기
+          </div>
+        </div>
+        {{!--
+        <div class="pagination d-flex justify-content-center mt-2">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {{#repeat paginationNum}}
+              <li
+                class="page-item {{#isEqual this ../page}} active {{/isEqual}} "
               >
-            </li>
-            {{/repeat}}
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+                <a
+                  class="page-link"
+                  href="/market?currency={{../currency}}&page={{this}}"
+                  >{{this}}</a
+                >
+              </li>
+              {{/repeat}}
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        --}}
       </div>
-      --}}
+      <div class="d-none d-md-block col-md-2"></div>
     </div>
+    <script>
+      $(function () {
+        $('.write-btn').on('click', function () {
+          const coinCode = $(this).data('coin-code');
+          const coinName = $(this).data('coin-name');
+          location.href = `/discussion-room/post?coinCode=${coinCode}&coinName=${coinName}`;
+        });
+      });
+    </script>
   </body>
 </html>

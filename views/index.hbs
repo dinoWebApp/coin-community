@@ -8,139 +8,143 @@
   </head>
   <body>
     {{> header}}
-    <div class="container coin-table">
-      <h4 class="market-type">
-        원화 마켓 <span class="currency">(기준 통화: 원)</span>
-      </h4>
-      <table class="table krw-market">
-        <thead>
-          <tr>
-            <th scope="col">코인명</th>
-            <th scope="col">현재 가격</th>
-            <th scope="col">당일 최고가</th>
-            <th scope="col">당일 최저가</th>
-            <th scope="col">변동률</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody class="krw-market">
-          {{#each coinInfo.krwMarket }}
-          <tr>
-            <th scope="row">{{ korean_name }}</th>
-            <td>{{ trade_price }}</td>
-            <td>{{ high_price }}</td>
-            <td>{{ low_price }}</td>
-            <td>
-              {{#isGreater signed_change_rate 0}}
-              <span style="color: green">{{ signed_change_rate }}%</span>
-              {{else}}
-              <span style="color: red">{{ signed_change_rate }}%</span>
-              {{/isGreater}}
-            </td>
-            <td>
-              <div
-                class="discussion-room-btn"
-                data-market-code="{{market_code}}"
-              >
-                종토방
-              </div>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+    <div class="d-flex">
+      <div class="d-none d-md-block col-md-2"></div>
+      <div class="col-12 col-md-8 coin-table">
+        <h4 class="market-type">
+          원화 마켓 <span class="currency">(기준 통화: 원)</span>
+        </h4>
+        <table class="table krw-market">
+          <thead>
+            <tr>
+              <th scope="col">코인명</th>
+              <th scope="col">현재 가격</th>
+              <th scope="col">당일 최고가</th>
+              <th scope="col">당일 최저가</th>
+              <th scope="col">변동률</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="krw-market">
+            {{#each coinInfo.krwMarket }}
+            <tr>
+              <th scope="row">{{ korean_name }}</th>
+              <td>{{ trade_price }}</td>
+              <td>{{ high_price }}</td>
+              <td>{{ low_price }}</td>
+              <td>
+                {{#isGreater signed_change_rate 0}}
+                <span style="color: green">{{ signed_change_rate }}%</span>
+                {{else}}
+                <span style="color: red">{{ signed_change_rate }}%</span>
+                {{/isGreater}}
+              </td>
+              <td>
+                <div
+                  class="discussion-room-btn"
+                  data-market-code="{{market_code}}"
+                >
+                  종토방
+                </div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
 
-      <div class="more-btn-container">
-        <div class="more-btn" data-currency="KRW">더보기</div>
-      </div>
+        <div class="more-btn-container">
+          <div class="more-btn" data-currency="KRW">더보기</div>
+        </div>
 
-      <h4 class="market-type">
-        USDT 마켓 <span class="currency">(기준 통화: USDT)</span>
-      </h4>
-      <table class="table usdt-market">
-        <thead>
-          <tr>
-            <th scope="col">코인명</th>
-            <th scope="col">현재 가격</th>
-            <th scope="col">당일 최고가</th>
-            <th scope="col">당일 최저가</th>
-            <th scope="col">변동률</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody class="usdt-market">
-          {{#each coinInfo.usdtMarket }}
-          <tr>
-            <th scope="row">{{ korean_name }}</th>
-            <td>{{ trade_price }}</td>
-            <td>{{ high_price }}</td>
-            <td>{{ low_price }}</td>
-            <td>
-              {{#isGreater signed_change_rate 0}}
-              <span style="color: green">{{ signed_change_rate }}%</span>
-              {{else}}
-              <span style="color: red">{{ signed_change_rate }}%</span>
-              {{/isGreater}}
-            </td>
-            <td>
-              <div
-                class="discussion-room-btn"
-                data-market-code="{{market_code}}"
-              >
-                종토방
-              </div>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div class="more-btn-container">
-        <div class="more-btn" data-currency="USDT">더보기</div>
-      </div>
+        <h4 class="market-type">
+          USDT 마켓 <span class="currency">(기준 통화: USDT)</span>
+        </h4>
+        <table class="table usdt-market">
+          <thead>
+            <tr>
+              <th scope="col">코인명</th>
+              <th scope="col">현재 가격</th>
+              <th scope="col">당일 최고가</th>
+              <th scope="col">당일 최저가</th>
+              <th scope="col">변동률</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="usdt-market">
+            {{#each coinInfo.usdtMarket }}
+            <tr>
+              <th scope="row">{{ korean_name }}</th>
+              <td>{{ trade_price }}</td>
+              <td>{{ high_price }}</td>
+              <td>{{ low_price }}</td>
+              <td>
+                {{#isGreater signed_change_rate 0}}
+                <span style="color: green">{{ signed_change_rate }}%</span>
+                {{else}}
+                <span style="color: red">{{ signed_change_rate }}%</span>
+                {{/isGreater}}
+              </td>
+              <td>
+                <div
+                  class="discussion-room-btn"
+                  data-market-code="{{market_code}}"
+                >
+                  종토방
+                </div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="more-btn-container">
+          <div class="more-btn" data-currency="USDT">더보기</div>
+        </div>
 
-      <h4 class="market-type">
-        BTC 마켓 <span class="currency">(기준 통화: BTC)</span>
-      </h4>
-      <table class="table btc-market">
-        <thead>
-          <tr>
-            <th scope="col">코인명</th>
-            <th scope="col">현재 가격</th>
-            <th scope="col">당일 최고가</th>
-            <th scope="col">당일 최저가</th>
-            <th scope="col">변동률</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody class="btc-market">
-          {{#each coinInfo.btcMarket }}
-          <tr>
-            <th scope="row">{{ korean_name }}</th>
-            <td>{{ trade_price }}</td>
-            <td>{{ high_price }}</td>
-            <td>{{ low_price }}</td>
-            <td>
-              {{#isGreater signed_change_rate 0}}
-              <span style="color: green">{{ signed_change_rate }}%</span>
-              {{else}}
-              <span style="color: red">{{ signed_change_rate }}%</span>
-              {{/isGreater}}
-            </td>
-            <td>
-              <div
-                class="discussion-room-btn"
-                data-market-code="{{market_code}}"
-              >
-                종토방
-              </div>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div class="more-btn-container">
-        <div class="more-btn" data-currency="BTC">더보기</div>
+        <h4 class="market-type">
+          BTC 마켓 <span class="currency">(기준 통화: BTC)</span>
+        </h4>
+        <table class="table btc-market">
+          <thead>
+            <tr>
+              <th scope="col">코인명</th>
+              <th scope="col">현재 가격</th>
+              <th scope="col">당일 최고가</th>
+              <th scope="col">당일 최저가</th>
+              <th scope="col">변동률</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="btc-market">
+            {{#each coinInfo.btcMarket }}
+            <tr>
+              <th scope="row">{{ korean_name }}</th>
+              <td>{{ trade_price }}</td>
+              <td>{{ high_price }}</td>
+              <td>{{ low_price }}</td>
+              <td>
+                {{#isGreater signed_change_rate 0}}
+                <span style="color: green">{{ signed_change_rate }}%</span>
+                {{else}}
+                <span style="color: red">{{ signed_change_rate }}%</span>
+                {{/isGreater}}
+              </td>
+              <td>
+                <div
+                  class="discussion-room-btn"
+                  data-market-code="{{market_code}}"
+                >
+                  종토방
+                </div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="more-btn-container">
+          <div class="more-btn" data-currency="BTC">더보기</div>
+        </div>
       </div>
+      <div class="d-none d-md-block col-md-2"></div>
     </div>
     <script>
       $(function () {
