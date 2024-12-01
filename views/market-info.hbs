@@ -35,9 +35,9 @@
               <td>{{ low_price }}</td>
               <td>
                 {{#isGreater signed_change_rate 0}}
-                <span style="color: green">{{ signed_change_rate }}%</span>
-                {{else}}
                 <span style="color: red">{{ signed_change_rate }}%</span>
+                {{else}}
+                <span style="color: blue">{{ signed_change_rate }}%</span>
                 {{/isGreater}}
               </td>
               <td>

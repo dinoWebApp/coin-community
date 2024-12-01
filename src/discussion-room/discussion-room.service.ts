@@ -1,7 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetDiscussionRoomInfoDto } from './dto/get-discussion-room-info.dto';
 import { Currency } from 'src/common/enums/currency.enum';
+import { CreateDiscussionRoomPostDto } from './dto/create-discussion-room-post.dto';
+import { Request } from 'express';
+import { DateTime } from 'luxon';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DiscussionRoomService {
@@ -51,5 +59,87 @@ export class DiscussionRoomService {
       coinInfo,
       coinName,
     };
+  }
+
+  async createDiscussionRoomPost(
+    createDiscussionRoomPostDto: CreateDiscussionRoomPostDto,
+    req: Request,
+  ) {
+    const { title, content, userName, password, isMember, coinCode, coinName } =
+      createDiscussionRoomPostDto;
+
+    const ip = this.getShortenIPv4(req.ip);
+    if (isMember) {
+      const user = await this.prisma.users.findUnique({
+        where: {
+          user_name: userName,
+        },
+      });
+
+      if (!user) throw new UnauthorizedException();
+    }
+
+    try {
+      const timestamp = DateTime.now()
+        .setZone('Asia/Seoul')
+        .toFormat('yyyy-MM-dd HH:mm:ss');
+      const post = await this.prisma.discussion_room_posts.create({
+        data: {
+          title: title,
+          content: content,
+          user_name: userName,
+          password: password,
+          is_member: isMember,
+          coin_code: coinCode,
+          coin_name: coinName,
+          timestamp: timestamp,
+          ip: ip,
+        },
+        select: {
+          id: true,
+        },
+      });
+      return post.id;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getDiscussionRoomPostDetail(id: number) {
+    try {
+      const post = await this.prisma.discussion_room_posts.update({
+        where: {
+          id: id,
+        },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+        select: {
+          title: true,
+          content: true,
+          user_name: true,
+          views: true,
+          likes: true,
+          timestamp: true,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new Error(`Post with ID ${id} not found`);
+      }
+      throw error;
+    }
+  }
+
+  getShortenIPv4(ip: string) {
+    const fullIp = ip.includes('::ffff:') ? ip.split('::ffff:')[1] : ip;
+    const ipArr = fullIp.split('.');
+    const shortenIp = `${ipArr[0]}.${ipArr[1]}`;
+    return shortenIp;
   }
 }
