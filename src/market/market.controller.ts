@@ -12,7 +12,7 @@ import {
 import { MarketService } from './market.service';
 import { CreateMarketDto } from './dto/create-market.dto';
 import { UpdateMarketDto } from './dto/update-market.dto';
-import { getMarketInfoDto } from './dto/get-market-info.dto';
+import { GetMarketInfoDto } from './dto/get-market-info.dto';
 
 @Controller('market')
 export class MarketController {
@@ -20,7 +20,7 @@ export class MarketController {
 
   @Get()
   @Render('market-info')
-  async marketInfo(@Query() getMarketInfoDto: getMarketInfoDto) {
+  async marketInfo(@Query() getMarketInfoDto: GetMarketInfoDto) {
     const { marketName, coinInfo, paginationNum, page, currency } =
       await this.marketService.getMarketInfo(getMarketInfoDto);
     return {

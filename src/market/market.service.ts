@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { getMarketInfoDto } from './dto/get-market-info.dto';
+import { GetMarketInfoDto } from './dto/get-market-info.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Currency } from 'src/common/enums/currency.enum';
 
 @Injectable()
 export class MarketService {
   constructor(private readonly prisma: PrismaService) {}
-  async getMarketInfo(getMarketInfoDto: getMarketInfoDto) {
+  async getMarketInfo(getMarketInfoDto: GetMarketInfoDto) {
     const { currency, page = 1 } = getMarketInfoDto;
     const pagination = 40 * (Number(page) - 1);
 

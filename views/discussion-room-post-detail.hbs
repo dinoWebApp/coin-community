@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{> globalcss }} {{> globaljs }}
+    <style>
+      .room-title {
+        border-bottom: solid 2px #0d6efd;
+      }
+
+      .post-top {
+        border-bottom: solid 2px darkgray;
+      }
+    </style>
+    <title>{{post.title}} - {{ post.coinName }} 종토방</title>
+  </head>
+  <body>
+    {{> header }}
+    <div class="container">
+      <div class="room-title">
+        <h3>{{post.coinName}} 종토방</h3>
+      </div>
+      <div class="post-top">
+        <div class="post-title">
+          <p>{{ post.title }}</p>
+        </div>
+        <div class="post-info d-flex justify-content-between mb-4">
+          <div class="d-flex">
+            <div>
+              <p>{{ post.user_name }}</p>
+            </div>
+            <div>
+              <p>{{ post.timestamp }}</p>
+            </div>
+          </div>
+          <div clas="d-flex">
+            <div>
+              <p>조회 {{ post.views }}</p>
+            </div>
+            <div>
+              <p>추천 {{ post.likes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="post-content">
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+  </body>
+</html>
