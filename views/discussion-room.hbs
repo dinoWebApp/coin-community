@@ -50,6 +50,30 @@
             글쓰기
           </div>
         </div>
+        <div class="post-list">
+          <table class="table posts">
+            <thead>
+              <tr>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+                <th scope="col">조회수</th>
+                <th scope="col">추천</th>
+              </tr>
+            </thead>
+            <tbody class="krw-market">
+              {{#each posts }}
+              <tr>
+                <th scope="row">{{ title }}</th>
+                <td>{{ content }}</td>
+                <td>{{ timestamp }}</td>
+                <td>{{ views }}</td>
+                <td>{{ likes }}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
         {{!--
         <div class="pagination d-flex justify-content-center mt-2">
           <nav aria-label="Page navigation example">

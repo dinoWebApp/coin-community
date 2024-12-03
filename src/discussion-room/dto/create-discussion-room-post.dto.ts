@@ -35,7 +35,7 @@ export class CreateDiscussionRoomPostDto {
   @IsString()
   coinName: string;
 
-  @IsNotEmpty()
-  @IsBoolean()
-  isMember: boolean;
+  // @IsNotEmpty()
+  // @IsBoolean()
+  // isMember: boolean;
 }

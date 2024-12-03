@@ -11,57 +11,114 @@
     <div class="d-flex">
       <div class="d-none d-md-block col-md-2"></div>
       <div class="col-12 col-md-8 coin-table mt-3">
-        <div class="d-flex justify-content-between mb-2">
-          <h4 class="discussion-room-title">{{ coinName }} 종토방</h4>
-          <div class="btn btn-sm btn-outline-primary d-flex align-items-center">
-            등록
-          </div>
-        </div>
-        <div class="d-flex align-items-center user-info flex-wrap">
-          <div class="d-flex align-items-center mb-1">
-            <p style="font-size: 13px; white-space: nowrap; width: 91.85px">
-              닉네임 (1~10자)
-            </p>
-            <div class="input-nickname ms-1 me-3">
-              <input
-                class="form-control form-control-sm"
-                type="text"
-                placeholder="익명"
-                aria-label="닉네임"
-                maxlength="10"
-              />
-            </div>
-          </div>
-          <div class="d-flex align-items-center mb-1">
-            <p style="font-size: 13px; white-space: nowrap">비밀번호 (1~6자)</p>
-            <div class="input-nickname ms-1">
-              <input
-                class="form-control form-control-sm"
-                type="password"
-                aria-label="비밀번호"
-                maxlength="6"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="title-container mt-1">
+        <form action="/discussion-room/post" method="POST" class="submit-form">
           <input
-            class="form-control"
-            type="text"
-            maxlength="50"
-            placeholder="제목"
+            type="hidden"
+            name="coinName"
+            value="{{coinName}}"
+            id="coinName"
           />
-        </div>
-        <div class="content-container mt-2">
-          <textarea
-            class="form-control"
-            placeholder="본문"
-            style="height: 480px; resize: none"
-            maxlength="500"
-          ></textarea>
-        </div>
+          <input
+            type="hidden"
+            name="coinCode"
+            value="{{coinCode}}"
+            id="coinCode"
+          />
+          {{!--
+          <input type="hidden" name="isMember" value="true" id="isMember" />
+          --}}
+          <div class="d-flex justify-content-between mb-2">
+            <h4 class="discussion-room-title">{{ coinName }} 종토방</h4>
+            <div
+              class="btn btn-sm btn-outline-primary d-flex align-items-center btn-submit"
+            >
+              등록
+            </div>
+          </div>
+          <div class="d-flex align-items-center user-info flex-wrap">
+            <div class="d-flex align-items-center mb-1">
+              <p style="font-size: 13px; white-space: nowrap; width: 91.85px">
+                닉네임 (1~10자)
+              </p>
+              <div class="input-nickname ms-1 me-3">
+                <input
+                  class="form-control form-control-sm"
+                  type="text"
+                  placeholder="익명"
+                  aria-label="닉네임"
+                  maxlength="10"
+                  id="userName"
+                  name="userName"
+                />
+              </div>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+              <p style="font-size: 13px; white-space: nowrap">
+                비밀번호 (1~6자)
+              </p>
+              <div class="input-nickname ms-1">
+                <input
+                  class="form-control form-control-sm"
+                  type="password"
+                  aria-label="비밀번호"
+                  maxlength="6"
+                  name="password"
+                  id="password"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="title-container mt-1">
+            <input
+              class="form-control"
+              type="text"
+              maxlength="50"
+              placeholder="제목"
+              name="title"
+              id="title"
+            />
+          </div>
+          <div class="content-container mt-2">
+            <textarea
+              class="form-control"
+              placeholder="본문"
+              style="height: 480px; resize: none"
+              maxlength="500"
+              name="content"
+              id="content"
+            ></textarea>
+          </div>
+        </form>
       </div>
       <div class="d-none d-md-block col-md-2"></div>
     </div>
+    <script>
+      $(function () {
+        $('.btn-submit').on('click', function () {
+          const title = $('#title').val();
+          const content = $('#content').val();
+          const userName = $('#userName').val();
+          const password = $('#password').val();
+          if (title === '') {
+            alert('제목을 입력해주세요.');
+            return;
+          }
+          if (content === '') {
+            alert('본문을 입력해주세요');
+            return;
+          }
+          if (userName === '') {
+            alert('닉네임을 입력해주세요');
+            return;
+          }
+          if (password === '') {
+            alert('비밀번호를 입력해주세요');
+            return;
+          }
+
+          $('.submit-form').submit();
+        });
+      });
+    </script>
   </body>
 </html>

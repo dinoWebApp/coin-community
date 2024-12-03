@@ -55,9 +55,16 @@ export class DiscussionRoomService {
       }
     });
 
+    const posts = await this.prisma.discussion_room_posts.findMany({
+      orderBy: {
+        timestamp: 'desc',
+      },
+    });
+
     return {
       coinInfo,
       coinName,
+      posts,
     };
   }
 
@@ -65,19 +72,19 @@ export class DiscussionRoomService {
     createDiscussionRoomPostDto: CreateDiscussionRoomPostDto,
     req: Request,
   ) {
-    const { title, content, userName, password, isMember, coinCode, coinName } =
+    const { title, content, userName, password, coinCode, coinName } =
       createDiscussionRoomPostDto;
 
     const ip = this.getShortenIPv4(req.ip);
-    if (isMember) {
-      const user = await this.prisma.users.findUnique({
-        where: {
-          user_name: userName,
-        },
-      });
+    // if (isMember) {
+    //   const user = await this.prisma.users.findUnique({
+    //     where: {
+    //       user_name: userName,
+    //     },
+    //   });
 
-      if (!user) throw new UnauthorizedException();
-    }
+    //   if (!user) throw new UnauthorizedException();
+    // }
 
     try {
       const timestamp = DateTime.now()
@@ -89,7 +96,7 @@ export class DiscussionRoomService {
           content: content,
           user_name: userName,
           password: password,
-          is_member: isMember,
+          is_member: false,
           coin_code: coinCode,
           coin_name: coinName,
           timestamp: timestamp,
@@ -97,9 +104,11 @@ export class DiscussionRoomService {
         },
         select: {
           id: true,
+          coin_code: true,
+          coin_name: true,
         },
       });
-      return post.id;
+      return post;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

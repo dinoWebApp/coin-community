@@ -17,35 +17,39 @@
   </head>
   <body>
     {{> header }}
-    <div class="container">
-      <div class="room-title">
-        <h3>{{post.coinName}} 종토방</h3>
-      </div>
-      <div class="post-top">
-        <div class="post-title">
-          <p>{{ post.title }}</p>
+    <div class="d-flex">
+      <div class="d-none d-md-block col-md-2"></div>
+      <div class="col-12 col-md-8 mt-2">
+        <div class="room-title">
+          <h3>{{post.coinName}} 종토방</h3>
         </div>
-        <div class="post-info d-flex justify-content-between mb-4">
-          <div class="d-flex">
-            <div>
-              <p>{{ post.user_name }}</p>
+        <div class="post-top">
+          <div class="post-title">
+            <p>{{ post.title }}</p>
+          </div>
+          <div class="post-info d-flex justify-content-between mb-4">
+            <div class="d-flex">
+              <div>
+                <p>{{ post.user_name }}</p>
+              </div>
+              <div>
+                <p>{{ post.timestamp }}</p>
+              </div>
             </div>
-            <div>
-              <p>{{ post.timestamp }}</p>
+            <div clas="d-flex">
+              <div>
+                <p>조회 {{ post.views }}</p>
+              </div>
+              <div>
+                <p>추천 {{ post.likes }}</p>
+              </div>
             </div>
           </div>
-          <div clas="d-flex">
-            <div>
-              <p>조회 {{ post.views }}</p>
-            </div>
-            <div>
-              <p>추천 {{ post.likes }}</p>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="post-content">
-        <p>{{ post.content }}</p>
+        <div class="post-content">
+          <p>{{ post.content }}</p>
+        </div>
+        <div class="d-none d-md-block col-md-2"></div>
       </div>
     </div>
   </body>

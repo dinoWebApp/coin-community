@@ -24,7 +24,7 @@ export class DiscussionRoomController {
   async discussionRoomInfo(
     @Query() getDiscussionRoomInfoDto: GetDiscussionRoomInfoDto,
   ) {
-    const { coinInfo, coinName } =
+    const { coinInfo, coinName, posts } =
       await this.discussionRoomService.getDiscussionRoomInfo(
         getDiscussionRoomInfoDto,
       );
@@ -33,6 +33,7 @@ export class DiscussionRoomController {
       coinInfo,
       coinName,
       coinCode: getDiscussionRoomInfoDto.coinCode,
+      posts,
     };
   }
 
@@ -54,11 +55,13 @@ export class DiscussionRoomController {
     @Req() req: Request,
     @Res() res: Response,
   ) {
-    const postId = await this.discussionRoomService.createDiscussionRoomPost(
+    const post = await this.discussionRoomService.createDiscussionRoomPost(
       createDiscussionRoomPostDto,
       req,
     );
-    res.redirect(`/discussion-room/post/${postId}`);
+    res.redirect(
+      `/discussion-room/post?coinCode=${post.coin_code}&coinName=${post.coin_name}`,
+    );
   }
 
   @Get('post/:id')
