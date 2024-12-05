@@ -4,6 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{> globalcss}} {{> globaljs}}
+    <style>
+      .post-list-header {
+        margin-bottom: 5px;
+        margin-top: 5px;
+        font-size: 13px;
+      }
+      .post-list-header div {
+        text-align: center;
+      }
+
+      .post-content {
+        text-align: center;
+      }
+
+      .post-row {
+        border-top: solid 1px #eee;
+        padding: 5px 0;
+      }
+
+      .post-title {
+        padding: 0 5px;
+      }
+
+      .post-number {
+        font-size: 13px;
+      }
+
+      .post-user-name,
+      .post-title {
+        font-size: 13px;
+      }
+
+      @media (max-width: 768px) {
+        .post-list-header {
+          font-size: 11px;
+        }
+
+        .post-number {
+          font-size: 10px;
+        }
+
+        .post-user-name,
+        .post-title {
+          font-size: 10px;
+        }
+      }
+    </style>
     <title>{{ coinName }} 종토방 - 코종방</title>
   </head>
   <body>
@@ -40,7 +87,10 @@
             {{/each}}
           </tbody>
         </table>
-        <div class="d-flex justify-content-between mt-2">
+        <div
+          class="d-flex justify-content-between mt-3"
+          style="border-bottom: solid 1px #eee; padding: 3px 0"
+        >
           <h4 class="discussion-room-title">종토방</h4>
           <div
             class="write-btn"
@@ -51,28 +101,24 @@
           </div>
         </div>
         <div class="post-list">
-          <table class="table posts">
-            <thead>
-              <tr>
-                <th scope="col">제목</th>
-                <th scope="col">작성자</th>
-                <th scope="col">작성일</th>
-                <th scope="col">조회수</th>
-                <th scope="col">추천</th>
-              </tr>
-            </thead>
-            <tbody class="krw-market">
-              {{#each posts }}
-              <tr>
-                <th scope="row">{{ title }}</th>
-                <td>{{ content }}</td>
-                <td>{{ timestamp }}</td>
-                <td>{{ views }}</td>
-                <td>{{ likes }}</td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
+          <div class="post-list-header d-flex">
+            <div class="col-1">글번호</div>
+            <div class="col-5">제목</div>
+            <div class="col-2">작성자</div>
+            <div class="col-2">작성일</div>
+            <div class="col-1">조회수</div>
+            <div class="col-1">추천</div>
+          </div>
+          {{#each posts }}
+          <div class="post-row d-flex">
+            <div class="col-1 post-content post-number">{{id}}</div>
+            <div class="col-5 post-title">{{title}}</div>
+            <div class="col-2 post-content post-user-name">{{userName}}</div>
+            <div class="col-2 post-content post-number">{{date}}</div>
+            <div class="col-1 post-content post-number">{{views}}</div>
+            <div class="col-1 post-content post-number">{{likes}}</div>
+          </div>
+          {{/each}}
         </div>
         {{!--
         <div class="pagination d-flex justify-content-center mt-2">

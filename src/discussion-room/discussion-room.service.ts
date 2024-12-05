@@ -55,10 +55,37 @@ export class DiscussionRoomService {
       }
     });
 
-    const posts = await this.prisma.discussion_room_posts.findMany({
+    const postData = await this.prisma.discussion_room_posts.findMany({
       orderBy: {
         timestamp: 'desc',
       },
+    });
+
+    const posts = postData.map((post) => {
+      const timestamp = post.timestamp;
+      const postDateTime = DateTime.fromFormat(
+        timestamp,
+        'yyyy-MM-dd HH:mm:ss',
+      );
+      const postDate = postDateTime.toFormat('yyyy-MM-dd');
+      const now = DateTime.now().setZone('Asia/Seoul');
+      const nowDate = now.toFormat('yyyy-MM-dd');
+      let date = '';
+      if (postDate === nowDate) {
+        date = postDateTime.toFormat('HH:mm');
+      } else if (postDateTime.year === now.year) {
+        date = postDateTime.toFormat('MM.dd');
+      } else {
+        date = postDateTime.toFormat('yy/MM/dd');
+      }
+      return {
+        id: post.id,
+        title: post.title,
+        userName: post.user_name,
+        date: date,
+        views: post.views,
+        likes: post.likes,
+      };
     });
 
     return {
