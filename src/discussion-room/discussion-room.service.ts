@@ -102,6 +102,7 @@ export class DiscussionRoomService {
     const { title, content, userName, password, coinCode, coinName } =
       createDiscussionRoomPostDto;
 
+    console.log(req.ip);
     const ip = this.getShortenIPv4(req.ip);
     // if (isMember) {
     //   const user = await this.prisma.users.findUnique({
@@ -159,8 +160,10 @@ export class DiscussionRoomService {
           views: true,
           likes: true,
           timestamp: true,
+          coin_name: true,
         },
       });
+      return post;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&

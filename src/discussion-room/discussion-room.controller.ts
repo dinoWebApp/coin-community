@@ -59,9 +59,7 @@ export class DiscussionRoomController {
       createDiscussionRoomPostDto,
       req,
     );
-    res.redirect(
-      `/discussion-room/post?coinCode=${post.coin_code}&coinName=${post.coin_name}`,
-    );
+    res.redirect(`/discussion-room?coinCode=${post.coin_code}`);
   }
 
   @Get('post/:id')

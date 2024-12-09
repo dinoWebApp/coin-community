@@ -21,6 +21,7 @@
       .post-row {
         border-top: solid 1px #eee;
         padding: 5px 0;
+        cursor: pointer;
       }
 
       .post-title {
@@ -110,7 +111,7 @@
             <div class="col-1">추천</div>
           </div>
           {{#each posts }}
-          <div class="post-row d-flex">
+          <div class="post-row d-flex" data-id="{{id}}">
             <div class="col-1 post-content post-number">{{id}}</div>
             <div class="col-5 post-title">{{title}}</div>
             <div class="col-2 post-content post-user-name">{{userName}}</div>
@@ -158,6 +159,11 @@
           const coinCode = $(this).data('coin-code');
           const coinName = $(this).data('coin-name');
           location.href = `/discussion-room/post?coinCode=${coinCode}&coinName=${coinName}`;
+        });
+
+        $('.post-row').on('click', function () {
+          const postId = $(this).data('id');
+          location.href = `/discussion-room/post/${postId}`;
         });
       });
     </script>
