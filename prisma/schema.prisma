@@ -39,10 +39,36 @@ model discussion_room_posts {
   timestamp  String   @db.VarChar(50)
   created_at DateTime @default(now()) @db.DateTime(0)
   updated_at DateTime @default(now()) @db.DateTime(0)
+  replies    discussion_room_replies[]
 }
 
 model users {
   id        Int    @id @default(autoincrement())
   user_name String @unique(map: "user_name") @db.VarChar(45)
   password  String @db.VarChar(255)
+}
+
+model discussion_room_reply_replies {
+  id         Int      @id @default(autoincrement())
+  parent_id  Int
+  content    String   @db.Text
+  user_name  String   @db.VarChar(50)
+  password   String?  @db.VarChar(50)
+  timestamp  String   @db.VarChar(50)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  parent_reply discussion_room_replies @relation(fields: [parent_id], references: [id])
+}
+
+model discussion_room_replies {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  content    String   @db.Text
+  user_name  String   @db.VarChar(50)
+  password   String?  @db.VarChar(25)
+  timestamp  String   @db.VarChar(50)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  post       discussion_room_posts @relation(fields: [post_id], references: [id])
+  replies    discussion_room_reply_replies[]
 }
