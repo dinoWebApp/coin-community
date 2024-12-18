@@ -176,7 +176,7 @@ export class DiscussionRoomService {
 
   async getDiscussionRoomPostDetail(id: number) {
     try {
-      const post = await this.prisma.discussion_room_posts.update({
+      let post = await this.prisma.discussion_room_posts.update({
         where: {
           id: id,
         },
@@ -186,6 +186,7 @@ export class DiscussionRoomService {
           },
         },
         select: {
+          id: true,
           title: true,
           content: true,
           user_name: true,
@@ -195,6 +196,21 @@ export class DiscussionRoomService {
           coin_name: true,
           replies: true,
         },
+      });
+
+      post.replies = post.replies.map((reply) => {
+        const timestamp = reply.timestamp;
+        const postDateTime = DateTime.fromFormat(
+          timestamp,
+          'yyyy-MM-dd HH:mm:ss',
+        );
+        const now = DateTime.now().setZone('Asia/Seoul');
+        if (postDateTime.year === now.year) {
+          reply.timestamp = postDateTime.toFormat('MM.dd HH:mm:ss');
+        } else {
+          reply.timestamp = postDateTime.toFormat('yy/MM/dd');
+        }
+        return reply;
       });
       return post;
     } catch (error) {

@@ -85,7 +85,7 @@
         </div>
         <div class="post-comment-contents">
           {{#each post.replies }}
-          <div class="content d-flex">
+          <div class="content d-flex flex-wrap">
             <div class="col-12 col-md-2">{{user_name}}</div>
             <div class="col-12 col-md-8">{{content}}</div>
             <div class="col-12 col-md-2">{{timestamp}}</div>
@@ -93,56 +93,88 @@
           {{/each}}
         </div>
         <div class="post-comment-input mt-2 px-1">
-          <form action=""></form>
-          <div class="d-flex align-items-center user-info flex-wrap">
-            <div class="d-flex align-items-center mb-1">
-              <p style="font-size: 13px; white-space: nowrap; width: 91.85px">
-                닉네임 (1~10자)
-              </p>
-              <div class="input-nickname ms-1 me-3">
-                <input
-                  class="form-control form-control-sm"
-                  type="text"
-                  placeholder="익명"
-                  aria-label="닉네임"
-                  maxlength="10"
-                  id="userName"
-                  name="userName"
-                />
+          <form
+            action="/discussion-room/post/reply"
+            method="post"
+            id="submit-reply"
+          >
+            <div class="d-flex align-items-center user-info flex-wrap">
+              <div class="d-flex align-items-center mb-1">
+                <input type="hidden" name="postId" value="{{post.id}}" />
+                <p style="font-size: 13px; white-space: nowrap; width: 91.85px">
+                  닉네임 (1~10자)
+                </p>
+                <div class="input-nickname ms-1 me-3">
+                  <input
+                    class="form-control form-control-sm"
+                    type="text"
+                    placeholder="익명"
+                    aria-label="닉네임"
+                    maxlength="10"
+                    id="userName"
+                    name="userName"
+                  />
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-1">
+                <p style="font-size: 13px; white-space: nowrap">
+                  비밀번호 (1~6자)
+                </p>
+                <div class="input-nickname ms-1">
+                  <input
+                    class="form-control form-control-sm"
+                    type="password"
+                    aria-label="비밀번호"
+                    maxlength="6"
+                    name="password"
+                    id="password"
+                  />
+                </div>
               </div>
             </div>
-            <div class="d-flex align-items-center mb-1">
-              <p style="font-size: 13px; white-space: nowrap">
-                비밀번호 (1~6자)
-              </p>
-              <div class="input-nickname ms-1">
-                <input
-                  class="form-control form-control-sm"
-                  type="password"
-                  aria-label="비밀번호"
-                  maxlength="6"
-                  name="password"
-                  id="password"
-                />
-              </div>
+            <div class="content-container mt-2">
+              <textarea
+                class="form-control"
+                placeholder="댓글"
+                style="height: 100px; resize: none"
+                maxlength="500"
+                name="content"
+                id="content"
+              ></textarea>
             </div>
-          </div>
-          <div class="content-container mt-2">
-            <textarea
-              class="form-control"
-              placeholder="댓글"
-              style="height: 100px; resize: none"
-              maxlength="500"
-              name="content"
-              id="content"
-            ></textarea>
-          </div>
-          <div class="d-flex justify-content-end mt-1">
-            <div class="btn btn-primary btn-sm">등록</div>
-          </div>
+            <div class="d-flex justify-content-end mt-1">
+              <div class="btn btn-primary btn-sm submit-reply-btn">등록</div>
+            </div>
+          </form>
         </div>
       </div>
       <div class="d-none d-md-block col-md-2"></div>
     </div>
+
+    <script>
+      $(function () {
+        $('.submit-reply-btn').on('click', function () {
+          const userName = $('#userName').val();
+          const password = $('#password').val();
+          const content = $('#content').val();
+          if (userName === '') {
+            alert('닉네임을 입력해주세요.');
+            return;
+          }
+
+          if (password === '') {
+            alert('비밀번호를 입력해주세요.');
+            return;
+          }
+
+          if (content === '') {
+            alert('댓글 내용을 입력해주세요.');
+            return;
+          }
+
+          $('#submit-reply').submit();
+        });
+      });
+    </script>
   </body>
 </html>

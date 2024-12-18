@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -23,6 +24,7 @@ export class CreatePostReplyDto {
   password?: string;
 
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   postId: number;
 
