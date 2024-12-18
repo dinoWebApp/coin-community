@@ -10,6 +10,7 @@ import { CreateDiscussionRoomPostDto } from './dto/create-discussion-room-post.d
 import { Request } from 'express';
 import { DateTime } from 'luxon';
 import { Prisma } from '@prisma/client';
+import { CreatePostReplyDto } from './dto/create-post-reply';
 
 @Injectable()
 export class DiscussionRoomService {
@@ -102,7 +103,6 @@ export class DiscussionRoomService {
     const { title, content, userName, password, coinCode, coinName } =
       createDiscussionRoomPostDto;
 
-    console.log(req.ip);
     const ip = this.getShortenIPv4(req.ip);
     // if (isMember) {
     //   const user = await this.prisma.users.findUnique({
@@ -142,6 +142,38 @@ export class DiscussionRoomService {
     }
   }
 
+  async createPostReply(createPostReplyDto: CreatePostReplyDto, req: Request) {
+    const { content, userName, password, postId } = createPostReplyDto;
+    const ip = this.getShortenIPv4(req.ip);
+    // if (isMember) {
+    //   const user = await this.prisma.users.findUnique({
+    //     where: {
+    //       user_name: userName,
+    //     },
+    //   });
+
+    //   if (!user) throw new UnauthorizedException();
+    // }
+
+    try {
+      const timestamp = DateTime.now()
+        .setZone('Asia/Seoul')
+        .toFormat('yyyy-MM-dd HH:mm:ss');
+      const post = await this.prisma.discussion_room_replies.create({
+        data: {
+          content: content,
+          user_name: userName,
+          password: password,
+          post_id: postId,
+          timestamp: timestamp,
+        },
+      });
+      return post;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getDiscussionRoomPostDetail(id: number) {
     try {
       const post = await this.prisma.discussion_room_posts.update({
@@ -161,6 +193,7 @@ export class DiscussionRoomService {
           likes: true,
           timestamp: true,
           coin_name: true,
+          replies: true,
         },
       });
       return post;

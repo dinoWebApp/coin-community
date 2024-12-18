@@ -81,9 +81,19 @@
           <p>{{ post.content }}</p>
         </div>
         <div class="post-comment-top px-1 py-2">
-          <p>전체 댓글 0개</p>
+          <p>전체 댓글 {{post.replies.length}}개</p>
+        </div>
+        <div class="post-comment-contents">
+          {{#each post.replies }}
+          <div class="content d-flex">
+            <div class="col-12 col-md-2">{{user_name}}</div>
+            <div class="col-12 col-md-8">{{content}}</div>
+            <div class="col-12 col-md-2">{{timestamp}}</div>
+          </div>
+          {{/each}}
         </div>
         <div class="post-comment-input mt-2 px-1">
+          <form action=""></form>
           <div class="d-flex align-items-center user-info flex-wrap">
             <div class="d-flex align-items-center mb-1">
               <p style="font-size: 13px; white-space: nowrap; width: 91.85px">

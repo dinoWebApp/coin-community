@@ -14,6 +14,7 @@ import { GetDiscussionRoomInfoDto } from './dto/get-discussion-room-info.dto';
 import { DiscussionRoomPostPageInfoDto } from './dto/discussion-room-post-page-info.dto';
 import { Request, Response } from 'express';
 import { CreateDiscussionRoomPostDto } from './dto/create-discussion-room-post.dto';
+import { CreatePostReplyDto } from './dto/create-post-reply';
 
 @Controller('discussion-room')
 export class DiscussionRoomController {
@@ -60,6 +61,19 @@ export class DiscussionRoomController {
       req,
     );
     res.redirect(`/discussion-room?coinCode=${post.coin_code}`);
+  }
+
+  @Post('post/reply')
+  async createPostReply(
+    @Body() createPostReplyDto: CreatePostReplyDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const post = await this.discussionRoomService.createPostReply(
+      createPostReplyDto,
+      req,
+    );
+    res.redirect(`/discussion-room/post/${createPostReplyDto.postId}`);
   }
 
   @Get('post/:id')
