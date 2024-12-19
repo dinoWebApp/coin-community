@@ -42,6 +42,34 @@
         margin: 0 5px;
         background-color: #eee;
       }
+
+      .content {
+        border-bottom: solid 1px #eee;
+      }
+
+      .comment-user-name {
+        font-size: 14px;
+        color: gray;
+        display: flex;
+        align-items: center;
+      }
+      .comment-date {
+        font-size: 13px;
+        color: gray;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+      }
+
+      .comment-content {
+        font-size: 14px;
+      }
+
+      @media (max-width: 768px) {
+        .comment-date {
+          justify-content: start;
+        }
+      }
     </style>
     <title>{{post.title}} - {{ post.coinName }} 종토방</title>
   </head>
@@ -85,10 +113,10 @@
         </div>
         <div class="post-comment-contents">
           {{#each post.replies }}
-          <div class="content d-flex flex-wrap">
-            <div class="col-12 col-md-2">{{user_name}}</div>
-            <div class="col-12 col-md-8">{{content}}</div>
-            <div class="col-12 col-md-2">{{timestamp}}</div>
+          <div class="content d-flex flex-wrap py-2 px-1">
+            <div class="col-12 col-md-2 comment-user-name">{{user_name}}</div>
+            <div class="col-12 col-md-7 comment-content">{{content}}</div>
+            <div class="col-12 col-md-3 comment-date">{{timestamp}}</div>
           </div>
           {{/each}}
         </div>
@@ -110,6 +138,7 @@
                     type="text"
                     placeholder="익명"
                     aria-label="닉네임"
+                    value="익명"
                     maxlength="10"
                     id="userName"
                     name="userName"
