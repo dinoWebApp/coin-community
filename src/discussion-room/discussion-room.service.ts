@@ -43,7 +43,7 @@ export class DiscussionRoomService {
           trade_price: Number(trade_price).toLocaleString(),
           high_price: Number(high_price).toLocaleString(),
           low_price: Number(low_price).toLocaleString(),
-          signed_change_rate: Number(signed_change_rate).toFixed(2),
+          signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
         };
       } else {
         return {
@@ -51,7 +51,7 @@ export class DiscussionRoomService {
           trade_price: Number(trade_price),
           high_price: Number(high_price),
           low_price: Number(low_price),
-          signed_change_rate: Number(signed_change_rate).toFixed(2),
+          signed_change_rate: (Number(signed_change_rate) * 100).toFixed(2),
         };
       }
     });

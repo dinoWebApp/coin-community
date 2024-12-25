@@ -45,6 +45,7 @@
 
       .content {
         border-bottom: solid 1px #eee;
+        cursor: pointer;
       }
 
       .comment-user-name {
@@ -63,6 +64,21 @@
 
       .comment-content {
         font-size: 14px;
+      }
+
+      .reply-write {
+        border: solid 1px #0d6efd;
+        border-radius: 5px;
+        background-color: #effbfb;
+      }
+
+      .reply-nick-name,
+      .reply-password {
+        padding: 10px;
+      }
+
+      .reply-content {
+        padding: 0 10px 10px 10px;
       }
 
       @media (max-width: 768px) {
@@ -117,6 +133,56 @@
             <div class="col-12 col-md-2 comment-user-name">{{user_name}}</div>
             <div class="col-12 col-md-7 comment-content">{{content}}</div>
             <div class="col-12 col-md-3 comment-date">{{timestamp}}</div>
+            <form
+              class="col-12 d-flex reply-write-container mt-2 d-none"
+              action="/discussion-room/post/reply/reply"
+              method="post"
+            >
+              <input type="hidden" value="{{id}}" />
+              <div class="col-1"></div>
+              <div class="col-11 reply-write">
+                <div class="reply-top d-flex flex-wrap">
+                  <div class="reply-nick-name col-5 col-md-3">
+                    <input
+                      class="form-control form-control-sm"
+                      type="text"
+                      placeholder="닉네임"
+                      aria-label="닉네임"
+                      value="익명"
+                      maxlength="10"
+                      id="replyUserName"
+                      name="replyUserName"
+                    />
+                  </div>
+                  <div class="col-5 col-md-3 reply-password">
+                    <input
+                      class="form-control form-control-sm"
+                      type="password"
+                      aria-label="비밀번호"
+                      placeholder="비밀번호"
+                      maxlength="6"
+                      name="replyPassword"
+                      id="replyPassword"
+                    />
+                  </div>
+                </div>
+                <div class="reply-content">
+                  <textarea
+                    class="form-control"
+                    placeholder="댓글"
+                    style="height: 100px; resize: none"
+                    maxlength="500"
+                    name="replyContent"
+                    id="replyContent"
+                  ></textarea>
+                </div>
+                <div class="d-flex justify-content-end mt-1">
+                  <div class="btn btn-primary btn-sm submit-reply-btn">
+                    등록
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
           {{/each}}
         </div>
@@ -202,6 +268,10 @@
           }
 
           $('#submit-reply').submit();
+        });
+
+        $('.content').on('click', function () {
+          $(this).children('.reply-write-container').toggleClass('d-none');
         });
       });
     </script>
