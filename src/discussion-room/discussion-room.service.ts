@@ -11,6 +11,7 @@ import { Request } from 'express';
 import { DateTime } from 'luxon';
 import { Prisma } from '@prisma/client';
 import { CreatePostReplyDto } from './dto/create-post-reply';
+import { CreatePostReplyReplyDto } from './dto/create-post-reply-reply';
 
 @Injectable()
 export class DiscussionRoomService {
@@ -159,16 +160,57 @@ export class DiscussionRoomService {
       const timestamp = DateTime.now()
         .setZone('Asia/Seoul')
         .toFormat('yyyy-MM-dd HH:mm:ss');
-      const post = await this.prisma.discussion_room_replies.create({
+      const postReply = await this.prisma.discussion_room_replies.create({
         data: {
           content: content,
           user_name: userName,
           password: password,
           post_id: postId,
           timestamp: timestamp,
+          ip: ip,
         },
       });
-      return post;
+      return postReply;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async createPostReplyReply(
+    createPostReplyReplyDto: CreatePostReplyReplyDto,
+    req: Request,
+  ) {
+    const { content, userName, password, parentId } = createPostReplyReplyDto;
+    const ip = this.getShortenIPv4(req.ip);
+    // if (isMember) {
+    //   const user = await this.prisma.users.findUnique({
+    //     where: {
+    //       user_name: userName,
+    //     },
+    //   });
+
+    //   if (!user) throw new UnauthorizedException();
+    // }
+
+    try {
+      const timestamp = DateTime.now()
+        .setZone('Asia/Seoul')
+        .toFormat('yyyy-MM-dd HH:mm:ss');
+      const postReplyReply =
+        await this.prisma.discussion_room_reply_replies.create({
+          data: {
+            content: content,
+            user_name: userName,
+            password: password,
+            parent_id: parentId,
+            timestamp: timestamp,
+            ip: ip,
+          },
+          include: {
+            parent_reply: true,
+          },
+        });
+      return postReplyReply;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

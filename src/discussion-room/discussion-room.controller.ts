@@ -15,6 +15,7 @@ import { DiscussionRoomPostPageInfoDto } from './dto/discussion-room-post-page-i
 import { Request, Response } from 'express';
 import { CreateDiscussionRoomPostDto } from './dto/create-discussion-room-post.dto';
 import { CreatePostReplyDto } from './dto/create-post-reply';
+import { CreatePostReplyReplyDto } from './dto/create-post-reply-reply';
 
 @Controller('discussion-room')
 export class DiscussionRoomController {
@@ -74,6 +75,22 @@ export class DiscussionRoomController {
       req,
     );
     res.redirect(`/discussion-room/post/${createPostReplyDto.postId}`);
+  }
+
+  @Post('post/reply/reply')
+  async createPostReplyReply(
+    @Body() createPostReplyReplyDto: CreatePostReplyReplyDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const postReplyReply =
+      await this.discussionRoomService.createPostReplyReply(
+        createPostReplyReplyDto,
+        req,
+      );
+    res.redirect(
+      `/discussion-room/post/${postReplyReply.parent_reply.post_id}`,
+    );
   }
 
   @Get('post/:id')

@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model coins {
@@ -25,20 +26,20 @@ model coins {
 }
 
 model discussion_room_posts {
-  id         Int      @id @default(autoincrement())
-  title      String   @db.VarChar(255)
-  content    String   @db.VarChar(3000)
-  user_name  String   @db.VarChar(50)
-  password   String?  @db.VarChar(50)
-  is_member  Boolean  @default(false)
-  coin_code  String   @db.VarChar(10)
-  coin_name  String   @db.VarChar(50)
-  views      Int      @default(0)
-  likes      Int      @default(0)
-  ip         String?  @db.VarChar(45)
-  timestamp  String   @db.VarChar(50)
-  created_at DateTime @default(now()) @db.DateTime(0)
-  updated_at DateTime @default(now()) @db.DateTime(0)
+  id         Int                       @id @default(autoincrement())
+  title      String                    @db.VarChar(255)
+  content    String                    @db.VarChar(3000)
+  user_name  String                    @db.VarChar(50)
+  password   String?                   @db.VarChar(50)
+  is_member  Boolean                   @default(false)
+  coin_code  String                    @db.VarChar(10)
+  coin_name  String                    @db.VarChar(50)
+  views      Int                       @default(0)
+  likes      Int                       @default(0)
+  ip         String?                   @db.VarChar(45)
+  timestamp  String                    @db.VarChar(50)
+  created_at DateTime                  @default(now()) @db.DateTime(0)
+  updated_at DateTime                  @default(now()) @db.DateTime(0)
   replies    discussion_room_replies[]
 }
 
@@ -49,26 +50,28 @@ model users {
 }
 
 model discussion_room_reply_replies {
-  id         Int      @id @default(autoincrement())
-  parent_id  Int
-  content    String   @db.Text
-  user_name  String   @db.VarChar(50)
-  password   String?  @db.VarChar(50)
-  timestamp  String   @db.VarChar(50)
-  created_at DateTime @default(now()) @db.DateTime(0)
-  updated_at DateTime @default(now()) @db.DateTime(0)
+  id           Int                     @id @default(autoincrement())
+  parent_id    Int
+  content      String                  @db.Text
+  user_name    String                  @db.VarChar(50)
+  password     String?                 @db.VarChar(50)
+  ip           String?                 @db.VarChar(45)
+  timestamp    String                  @db.VarChar(50)
+  created_at   DateTime                @default(now()) @db.DateTime(0)
+  updated_at   DateTime                @default(now()) @db.DateTime(0)
   parent_reply discussion_room_replies @relation(fields: [parent_id], references: [id])
 }
 
 model discussion_room_replies {
-  id         Int      @id @default(autoincrement())
+  id         Int                             @id @default(autoincrement())
   post_id    Int
-  content    String   @db.Text
-  user_name  String   @db.VarChar(50)
-  password   String?  @db.VarChar(25)
-  timestamp  String   @db.VarChar(50)
-  created_at DateTime @default(now()) @db.DateTime(0)
-  updated_at DateTime @default(now()) @db.DateTime(0)
-  post       discussion_room_posts @relation(fields: [post_id], references: [id])
+  content    String                          @db.Text
+  user_name  String                          @db.VarChar(50)
+  password   String?                         @db.VarChar(25)
+  ip         String?                         @db.VarChar(45)
+  timestamp  String                          @db.VarChar(50)
+  created_at DateTime                        @default(now()) @db.DateTime(0)
+  updated_at DateTime                        @default(now()) @db.DateTime(0)
+  post       discussion_room_posts           @relation(fields: [post_id], references: [id])
   replies    discussion_room_reply_replies[]
 }
