@@ -6,11 +6,11 @@
     {{> globalcss }} {{> globaljs }}
     <style>
       .room-title {
-        border-bottom: solid 2px #0d6efd;
+        border-bottom: solid 1px #eee;
       }
 
       .post-top {
-        border-bottom: solid 2px #0d6efd;
+        border-bottom: solid 1px #eee;
       }
 
       .post-title {
@@ -27,12 +27,12 @@
       }
 
       .post-comment-top {
-        border-bottom: solid 2px #0d6efd;
+        border-bottom: solid 1px #eee;
       }
 
       .post-comment-input {
-        border-top: solid 2px #0d6efd;
-        border-bottom: solid 2px #0d6efd;
+        border-top: solid 1px #eee;
+        border-bottom: solid 2px #eee;
         padding: 10px 0;
       }
 
@@ -45,7 +45,6 @@
 
       .content {
         border-bottom: solid 1px #eee;
-        cursor: pointer;
       }
 
       .comment-user-name {
@@ -64,12 +63,12 @@
 
       .comment-content {
         font-size: 14px;
+        cursor: pointer;
       }
 
       .reply-write {
-        border: solid 1px #0d6efd;
+        border: solid 1px #eee;
         border-radius: 5px;
-        background-color: #effbfb;
       }
 
       .reply-nick-name,
@@ -79,6 +78,12 @@
 
       .reply-content {
         padding: 0 10px 10px 10px;
+      }
+
+      .reply-reply {
+        border-radius: 5px;
+        border: solid 1px #eee;
+        padding: 10px;
       }
 
       @media (max-width: 768px) {
@@ -137,8 +142,9 @@
               class="col-12 d-flex reply-write-container mt-2 d-none"
               action="/discussion-room/post/reply/reply"
               method="post"
+              id="submit-reply-reply"
             >
-              <input type="hidden" value="{{id}}" />
+              <input type="hidden" name="parentId" value="{{id}}" />
               <div class="col-1"></div>
               <div class="col-11 reply-write">
                 <div class="reply-top d-flex flex-wrap">
@@ -177,12 +183,24 @@
                   ></textarea>
                 </div>
                 <div class="d-flex justify-content-end mt-1">
-                  <div class="btn btn-primary btn-sm submit-reply-btn">
+                  <div class="btn btn-primary btn-sm submit-reply-reply-btn">
                     등록
                   </div>
                 </div>
               </div>
             </form>
+            {{#each replies}}
+            <div class="d-flex py-2 px-1 col-12">
+              <div class="col-1"></div>
+              <div class="col-11 d-flex flex-wrap reply-reply">
+                <div class="col-12 col-md-2 comment-user-name">
+                  {{user_name}}
+                </div>
+                <div class="col-12 col-md-7 comment-content">{{content}}</div>
+                <div class="col-12 col-md-3 comment-date">{{timestamp}}</div>
+              </div>
+            </div>
+            {{/each}}
           </div>
           {{/each}}
         </div>
@@ -270,8 +288,30 @@
           $('#submit-reply').submit();
         });
 
-        $('.content').on('click', function () {
-          $(this).children('.reply-write-container').toggleClass('d-none');
+        $('.submit-reply-reply-btn').on('click', function () {
+          const userName = $('#replyUserName').val();
+          const password = $('#replyPassword').val();
+          const content = $('#replyContent').val();
+          if (userName === '') {
+            alert('닉네임을 입력해주세요.');
+            return;
+          }
+
+          if (password === '') {
+            alert('비밀번호를 입력해주세요.');
+            return;
+          }
+
+          if (content === '') {
+            alert('댓글 내용을 입력해주세요.');
+            return;
+          }
+
+          $('#submit-reply-reply').submit();
+        });
+
+        $('.comment-content').on('click', function () {
+          $(this).siblings('.reply-write-container').toggleClass('d-none');
         });
       });
     </script>

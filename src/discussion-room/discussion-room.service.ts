@@ -58,6 +58,9 @@ export class DiscussionRoomService {
     });
 
     const postData = await this.prisma.discussion_room_posts.findMany({
+      where: {
+        coin_code: coinCode,
+      },
       orderBy: {
         timestamp: 'desc',
       },
@@ -180,7 +183,8 @@ export class DiscussionRoomService {
     createPostReplyReplyDto: CreatePostReplyReplyDto,
     req: Request,
   ) {
-    const { content, userName, password, parentId } = createPostReplyReplyDto;
+    const { replyContent, replyUserName, replyPassword, parentId } =
+      createPostReplyReplyDto;
     const ip = this.getShortenIPv4(req.ip);
     // if (isMember) {
     //   const user = await this.prisma.users.findUnique({
@@ -199,9 +203,9 @@ export class DiscussionRoomService {
       const postReplyReply =
         await this.prisma.discussion_room_reply_replies.create({
           data: {
-            content: content,
-            user_name: userName,
-            password: password,
+            content: replyContent,
+            user_name: replyUserName,
+            password: replyPassword,
             parent_id: parentId,
             timestamp: timestamp,
             ip: ip,
@@ -236,7 +240,11 @@ export class DiscussionRoomService {
           likes: true,
           timestamp: true,
           coin_name: true,
-          replies: true,
+          replies: {
+            include: {
+              replies: true,
+            },
+          },
         },
       });
 
@@ -252,8 +260,23 @@ export class DiscussionRoomService {
         } else {
           reply.timestamp = postDateTime.toFormat('yy/MM/dd');
         }
+
+        reply.replies.map((reply) => {
+          const timestamp = reply.timestamp;
+          const postDateTime = DateTime.fromFormat(
+            timestamp,
+            'yyyy-MM-dd HH:mm:ss',
+          );
+          const now = DateTime.now().setZone('Asia/Seoul');
+          if (postDateTime.year === now.year) {
+            reply.timestamp = postDateTime.toFormat('MM.dd HH:mm:ss');
+          } else {
+            reply.timestamp = postDateTime.toFormat('yy/MM/dd');
+          }
+        });
         return reply;
       });
+
       return post;
     } catch (error) {
       if (

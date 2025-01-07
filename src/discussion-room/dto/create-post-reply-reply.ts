@@ -12,16 +12,16 @@ export class CreatePostReplyReplyDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(500)
-  content: string;
+  replyContent: string;
 
   @IsNotEmpty()
   @IsString()
   @MaxLength(10)
-  userName: string;
+  replyUserName: string;
 
   @IsOptional()
   @IsString()
-  password?: string;
+  replyPassword?: string;
 
   @IsNotEmpty()
   @Type(() => Number)
